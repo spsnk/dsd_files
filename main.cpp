@@ -1,12 +1,20 @@
 #include <iostream>
 #include <cstdlib>
-#include <string>
+#include <cstring>
+#include <thread>
+#include <vector>
 #include <sys/types.h>
 #include <dirent.h>
 #include <errno.h>
 #include "archivo.h"
 
 using namespace std;
+
+int
+parse ( string &filename )
+{
+  
+}
 
 int
 main ( int argc, char *argv[] )
@@ -22,6 +30,7 @@ main ( int argc, char *argv[] )
   DIR * dip;
   struct dirent *dit;
   bool is_dir;
+  std::vector<std::thread> threads;
 
   if ( (dip = opendir( argv[2]) ) == NULL )
   {
@@ -32,11 +41,7 @@ main ( int argc, char *argv[] )
 
   while ( (dit = readdir(dip) ) != NULL )
   { 
-    struct stat stbuf;
-    stat(dit->d_name, &stbuf);
-    is_dir = S_ISDIR(stbuf.st_mode);
-
-    if(!is_dir)
+    if( strstr (dit->d_name, ".txt") )
     {
       file_number++;
       cout << "File: " << dit->d_name << endl;
