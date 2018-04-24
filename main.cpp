@@ -3,6 +3,7 @@
 #include <cstring>
 #include <thread>
 #include <vector>
+#include <map>
 #include <sys/types.h>
 #include <dirent.h>
 #include <errno.h>
@@ -10,10 +11,13 @@
 
 using namespace std;
 
+map < string, size_t> letters;
+
 int
-parse ( string &filename )
+parse ( string filename )
 {
-  
+  cout << "F: " << filename << endl;
+  return 0;
 }
 
 int
@@ -25,7 +29,7 @@ main ( int argc, char *argv[] )
     return 1;
   }
 
-  int threads = atoi (argv[1]);
+  int threads_number = atoi (argv[1]);
   int file_number = 0;
   DIR * dip;
   struct dirent *dit;
@@ -44,10 +48,15 @@ main ( int argc, char *argv[] )
     if( strstr (dit->d_name, ".txt") )
     {
       file_number++;
-      cout << "File: " << dit->d_name << endl;
+      string filename ( dit->d_name );
+      threads.push_back( thread( parse, filename));
+      //cout << "File: " << dit->d_name << endl;
     }
   }
-
+  for (thread& th : threads) 
+  {
+    th.join();
+  }
   closedir(dip);
 }
 
